@@ -18,7 +18,7 @@ export class Character
 
 	private direction: IDirection = "right";
 	private needMovingNow = false;
-	private jumped = false;
+	private canJump = false;
 	private platformBelowX: null | number = null;
 	private platformBelowPastX: null | number = null;
 	private speedCurX = 0;
@@ -32,7 +32,7 @@ export class Character
 
 	public update()
 	{
-		this.move()
+		this.move();
 	}
 	private calcY()
 	{
@@ -109,7 +109,7 @@ export class Character
 		this.speedCurY = 0;
 		if (this.y >= el.y + el.height / 2)
 		{
-			this.jumped = false;
+			this.canJump = true;
 			this.platformBelowX = el.x;
 		}
 	}
@@ -133,6 +133,7 @@ export class Character
 		rect2.height -= 2;
 
 		this.platformBelowX = null;
+		this.canJump = false;
 		for (const el of this.level.platforms)
 		{
 			let _nextY = { nextY, intersected: false };
@@ -178,11 +179,7 @@ export class Character
 	}
 	public jump()
 	{
-		if (!this.jumped)
-		{
-			this.speedCurY = this.jumpForce;
-			this.jumped = true;
-		}
+		if (this.canJump) this.speedCurY = this.jumpForce;
 	}
 	public startMoving(direction: IDirection)
 	{
