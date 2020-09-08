@@ -32,101 +32,7 @@ export class Character
 
 	public update()
 	{
-		// this.moveY();
-		// this.moveX();
 		this.move()
-	}
-	private moveY()
-	{
-		this.speedCurY -= this.mass * this.level.GF;
-
-		let nextY = this.y + this.speedCurY;
-		const rect = this.getRect();
-		rect.y = nextY;
-		rect.x += 1;
-		rect.width -= 2;
-		this.platformBelowX = null;
-		for (const el of this.level.platforms)
-		{
-			if (intersection.rects(rect, el))
-			{
-				this.speedCurY = 0;
-				if (nextY < this.y)
-				{
-					nextY = el.y + el.height;
-					this.jumped = false;
-					this.platformBelowX = el.x;
-				}
-				else nextY = el.y - this.height;
-
-				// if (nextY > el.y + el.height / 2)
-				// {
-				// 	nextY = el.y + el.height;
-				// 	this.jumped = false;
-				// }
-				// else nextY = el.y - this.height;
-			}
-		}
-
-		this.y = nextY;
-		this.y = Math.max(this.y, 0);
-	}
-	private moveX()
-	{
-		if (this.needMovingNow)
-		{
-			switch (this.direction) {
-				case "left":
-					this.accCur = -this.acc;
-					break;
-
-				case "right":
-					this.accCur = this.acc;
-					break;
-				default:
-					break;
-			}
-		}
-		else
-		{
-			this.accCur = 0;
-			if (-this.acc <= this.speedCurX && this.speedCurX <= this.acc) this.speedCurX = 0;
-			else if (this.speedCurX > 0) this.accCur = -this.acc;
-			else if (this.speedCurX < 0) this.accCur = this.acc;
-		}
-		this.speedCurX += this.accCur;
-		this.speedCurX = MinMax(this.speedCurX, -this.speedMax, this.speedMax);
-
-		let nextX = this.x + this.speedCurX;
-
-		if (this.platformBelowX != null)
-		{
-			if (this.platformBelowPastX == null)
-			{
-				this.platformBelowPastX = this.platformBelowX;
-			}
-			else
-			{
-				nextX += this.platformBelowX - this.platformBelowPastX;
-				this.platformBelowPastX = this.platformBelowX;
-			}
-		}
-		else this.platformBelowPastX = null;
-
-		const rect = this.getRect();
-		rect.x = nextX;
-		rect.y += 1;
-		rect.height -= 2;
-		this.level.platforms.forEach(el => {
-			if (intersection.rects(rect, el))
-			{
-				this.speedCurX = 0;
-				if (nextX > el.x + el.width / 2) nextX = el.x + el.width;
-				else nextX = el.x - this.width;
-			}
-		});
-
-		this.x = nextX;
 	}
 	private calcY()
 	{
@@ -229,11 +135,6 @@ export class Character
 		this.platformBelowX = null;
 		for (const el of this.level.platforms)
 		{
-			let _nextY1 = { nextY, intersected: false };
-			let _nextX1 = { nextX, intersected: false };
-			let _nextY2 = { nextY, intersected: false };
-			let _nextX2 = { nextX, intersected: false };
-
 			let _nextY = { nextY, intersected: false };
 			let _nextX = { nextX, intersected: false };
 
