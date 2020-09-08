@@ -1,9 +1,11 @@
 import { Level } from "./level.js";
 import { Level1 } from "./levels/level01.js";
+import { Camera } from "./camera.js";
 
 export class LevelPlayer
 {
 	private level: Level | null = new Level1();
+	private camera: Camera = Camera.create.inCenter("XY");
 	private active = true;
 
 	constructor()
@@ -33,6 +35,8 @@ export class LevelPlayer
 		{
 			ctx.fillStyle = this.level.backgroundColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+			this.camera.translate(ctx, this.level.character);
 
 			this.level.platforms.forEach(pl => pl.draw(ctx));
 

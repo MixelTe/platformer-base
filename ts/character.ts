@@ -200,7 +200,7 @@ export class Character
 		this.x = nextX;
 		// this.y = Math.max(this.y, 0);
 	}
-	private getRect()
+	public getRect()
 	{
 		return { x: this.x, y: this.y, width: this.width, height: this.height };
 	}
