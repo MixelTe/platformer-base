@@ -6,7 +6,7 @@ export class Platform
 	public y: number;
 	public width: number;
 	public height: number;
-	private color = "green";
+	protected color = "green";
 
 	public nextPos: Rect | null = null;
 

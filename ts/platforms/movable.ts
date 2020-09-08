@@ -2,7 +2,8 @@ import { Platform } from "./platform.js";
 
 export class Platform_Movable extends Platform
 {
-	private counter = 0;
+	protected color = "darkgreen";
+
 	private speed: number;
 	private minPos: number;
 	private maxPos: number;
