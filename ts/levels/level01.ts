@@ -7,6 +7,8 @@ export class Level1 extends Level
 	public platforms = [
 		new Platform(100, 90, 100, 10),
 		new Platform(400, 180, 200, 10),
+		new Platform(200, 270, 150, 10),
+		new Platform(500, 360, 180, 10),
 
 
 		new Platform(0, 0, 800, 10),
