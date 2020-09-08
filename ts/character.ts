@@ -13,7 +13,8 @@ export class Character
 	private color = "blue";
 	private speedMax = 10;
 	private acc = 1;
-	private jumpForce = 10;
+	private jumpForce = 9;
+	private jumpForce_SpeedMul = 0.2;
 	private mass = 5;
 
 	private direction: IDirection = "right";
@@ -205,7 +206,10 @@ export class Character
 	}
 	public jump()
 	{
-		if (this.canJump) this.speedCurY = this.jumpForce;
+		if (this.canJump)
+		{
+			this.speedCurY = this.jumpForce + Math.abs(this.speedCurX) * this.jumpForce_SpeedMul;
+		}
 	}
 	public startMoving(direction: IDirection)
 	{
