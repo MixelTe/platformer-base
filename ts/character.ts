@@ -117,8 +117,9 @@ export class Character
 		rect2.height -= 2;
 
 		this.platformBelowX = null;
-		let platformBelowXSet = false;
+		let platformBelowXSet: null | boolean = null;
 		this.canJump = false;
+		let platformBelow: Platform | null | false = null;
 		for (const el of this.level.platforms)
 		{
 			let _nextY = { nextY, intersected: false };
@@ -143,6 +144,13 @@ export class Character
 					const dy = el.nextPos.y - el.y;
 					_nextY.nextY += dy;
 					_nextX.nextX += dx;
+
+					const rect = this.getRect();
+					if (intersection.rects(rect, el))
+					{
+						const dy = el.nextPos.y - el.y;
+						if (dy < 0) _nextY.nextY += dy;
+					}
 				}
 			}
 
@@ -155,19 +163,11 @@ export class Character
 				this.speedCurY = 0;
 				if (this.y >= el.y + el.height / 2)
 				{
+					if (platformBelow == null) platformBelow = el;
+					else platformBelow = false;
 					this.canJump = true;
-					if (this.platformBelow == el)
-					{
-						this.platformBelowX = el.x;
-						platformBelowXSet = true;
-					}
-					this.platformBelow = el;
-					if (platformBelowXSet)
-					{
-						this.platformBelow = null;
-						this.platformBelowPastX = null;
-						this.platformBelowX = null;
-					}
+					if (platformBelowXSet == null) platformBelowXSet = true;
+					else platformBelowXSet = false;
 				}
 			}
 
@@ -175,6 +175,25 @@ export class Character
 			nextX = _nextX.nextX;
 		};
 
+		if (platformBelow instanceof Platform)
+		{
+			if (platformBelow.nextPos != null) nextY = platformBelow.nextPos.y + platformBelow.height;
+
+			if (platformBelowXSet)
+			{
+				if (this.platformBelow == platformBelow)
+				{
+					this.platformBelowX = platformBelow.x;
+				}
+				this.platformBelow = platformBelow;
+			}
+			else
+			{
+				this.platformBelow = null;
+				this.platformBelowPastX = null;
+				this.platformBelowX = null;
+			}
+		}
 
 		this.y = nextY;
 		this.x = nextX;
