@@ -1,5 +1,5 @@
 import { Character } from "./character.js";
-import { Platform } from "./platform.js";
+import { Platform } from "./platforms/platform.js";
 
 export abstract class Level
 {

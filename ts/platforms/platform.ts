@@ -1,4 +1,4 @@
-import { Rect } from "./littleLib";
+import { Rect } from "../littleLib.js";
 
 export class Platform
 {
@@ -9,7 +9,6 @@ export class Platform
 	private color = "green";
 
 	public nextPos: Rect | null = null;
-	private counter = 0;
 
 	constructor(x: number, y: number, width: number, height: number)
 	{
@@ -19,17 +18,7 @@ export class Platform
 		this.height = height;
 	}
 
-	public preUpdate()
-	{
-		this.nextPos = { x: this.x, y: this.y, width: this.width, height: this.height };
-		const l = 10;
-		const s = 1;
-		// this.nextPos.x += s;
-		// if (this.counter < l) this.nextPos.y += s;
-		// else this.nextPos.y -= s;
-		this.counter++;
-		this.counter %= l * 2;
-	}
+	public preUpdate() { }
 	public update()
 	{
 		if (this.nextPos != null)
@@ -39,6 +28,10 @@ export class Platform
 			this.width = this.nextPos.width;
 			this.height = this.nextPos.height;
 		}
+	}
+	protected getRect()
+	{
+		return { x: this.x, y: this.y, width: this.width, height: this.height };
 	}
 
 	public draw(ctx: CanvasRenderingContext2D)

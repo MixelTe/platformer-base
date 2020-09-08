@@ -1,7 +1,7 @@
 import { MinMax } from "./functions.js";
 import { intersection, Rect } from "./littleLib.js";
 import { Level } from "./level.js";
-import { Platform } from "./platform.js";
+import { Platform } from "./platforms/platform.js";
 
 export class Character
 {
