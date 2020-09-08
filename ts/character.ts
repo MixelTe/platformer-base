@@ -19,6 +19,7 @@ export class Character
 	private direction: IDirection = "right";
 	private needMovingNow = false;
 	private canJump = false;
+	private platformBelow: null | Platform = null;
 	private platformBelowX: null | number = null;
 	private platformBelowPastX: null | number = null;
 	private speedCurX = 0;
@@ -69,15 +70,11 @@ export class Character
 
 		if (this.platformBelowX != null)
 		{
-			if (this.platformBelowPastX == null)
-			{
-				this.platformBelowPastX = this.platformBelowX;
-			}
-			else
+			if (this.platformBelowPastX != null)
 			{
 				nextX += this.platformBelowX - this.platformBelowPastX;
-				this.platformBelowPastX = this.platformBelowX;
 			}
+			this.platformBelowPastX = this.platformBelowX;
 		}
 		else this.platformBelowPastX = null;
 		return nextX;
@@ -104,19 +101,6 @@ export class Character
 		}
 		return { nextX, intersected };
 	}
-	private intersectedY(el: Platform)
-	{
-		this.speedCurY = 0;
-		if (this.y >= el.y + el.height / 2)
-		{
-			this.canJump = true;
-			this.platformBelowX = el.x;
-		}
-	}
-	private intersectedX()
-	{
-		this.speedCurX = 0;
-	}
 	private move()
 	{
 		let nextY = this.calcY();
@@ -133,6 +117,7 @@ export class Character
 		rect2.height -= 2;
 
 		this.platformBelowX = null;
+		let platformBelowXSet = false;
 		this.canJump = false;
 		for (const el of this.level.platforms)
 		{
@@ -161,8 +146,30 @@ export class Character
 				}
 			}
 
-			if (_nextX.intersected) this.intersectedX();
-			if (_nextY.intersected) this.intersectedY(el);
+			if (_nextX.intersected)
+			{
+				this.speedCurX = 0;
+			};
+			if (_nextY.intersected)
+			{
+				this.speedCurY = 0;
+				if (this.y >= el.y + el.height / 2)
+				{
+					this.canJump = true;
+					if (this.platformBelow == el)
+					{
+						this.platformBelowX = el.x;
+						platformBelowXSet = true;
+					}
+					this.platformBelow = el;
+					if (platformBelowXSet)
+					{
+						this.platformBelow = null;
+						this.platformBelowPastX = null;
+						this.platformBelowX = null;
+					}
+				}
+			}
 
 			nextY = _nextY.nextY;
 			nextX = _nextX.nextX;
