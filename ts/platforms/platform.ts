@@ -1,4 +1,4 @@
-import { Rect } from "../littleLib.js";
+import { Rect } from "../functions.js";
 
 export class Platform
 {
@@ -31,7 +31,7 @@ export class Platform
 	}
 	protected getRect()
 	{
-		return { x: this.x, y: this.y, width: this.width, height: this.height };
+		return new Rect(this.x, this.y, this.width, this.height);
 	}
 
 	public draw(ctx: CanvasRenderingContext2D)

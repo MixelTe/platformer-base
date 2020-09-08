@@ -1,5 +1,5 @@
-import { MinMax } from "./functions.js";
-import { intersection, Rect } from "./littleLib.js";
+import { MinMax, Rect } from "./functions.js";
+import { intersection } from "./littleLib.js";
 import { Level } from "./level.js";
 import { Platform } from "./platforms/platform.js";
 
@@ -202,7 +202,7 @@ export class Character
 	}
 	public getRect()
 	{
-		return { x: this.x, y: this.y, width: this.width, height: this.height };
+		return new Rect(this.x, this.y, this.width, this.height);
 	}
 	public jump()
 	{
