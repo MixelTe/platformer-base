@@ -183,7 +183,7 @@ export class Character extends WorldObject_Movable
 				{
 					if (el instanceof Character)
 					{
-						el.jump(0.7);
+						el.jump(1);
 					}
 				}
 			}
