@@ -9,7 +9,7 @@ export abstract class Level
 	public objects: WorldObject[] = [];
 
 	protected abstract platforms: Platform[];
-	protected characters: Character[] = [];
+	public characters: Character[] = [];
 	public mainCharacter: Character;
 
 	constructor()

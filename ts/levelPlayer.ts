@@ -2,20 +2,30 @@ import { Level } from "./level.js";
 import { Level1 } from "./levels/level01.js";
 import { Camera } from "./camera.js";
 import { Rect } from "./functions.js";
+import { CharacterController } from "./characterController.js";
 
 export class LevelPlayer
 {
-	private level: Level | null = new Level1();
+	private level: Level | null = null;
 	// private camera: Camera = Camera.create.inCenter("XY", new Rect(-100, -100, 1000, 800));
 	private camera: Camera = Camera.create.inZone(new Rect(200, 100, 300, 200), "XY", new Rect(-100, 0, 1000, 800));
+	private chrControllers: CharacterController[] = [];
 	private active = true;
 
 	constructor()
 	{
 		document.addEventListener("keydown", this.keydown.bind(this));
 		document.addEventListener("keyup", this.keyup.bind(this));
+		this.setLevel();
 	}
 
+	public setLevel()
+	{
+		this.level = new Level1();
+		this.chrControllers = [];
+		this.chrControllers[0] = new CharacterController(this.level.mainCharacter);
+		if (this.level.characters[1]) this.chrControllers[1] = new CharacterController(this.level.characters[1], "wsad");
+	}
 
 
 	public update()
@@ -54,42 +64,20 @@ export class LevelPlayer
 	{
 		if (this.active && this.level != null)
 		{
-			switch (e.code)
+			this.chrControllers.forEach(ctrl =>
 			{
-				case "ArrowUp":
-					this.level.mainCharacter.jump();
-					break;
-
-				case "ArrowRight":
-					this.level.mainCharacter.startMoving("right");
-					break;
-
-				case "ArrowLeft":
-					this.level.mainCharacter.startMoving("left");
-					break;
-
-				default:
-					break;
-			}
+				ctrl.keydown(e);
+			});
 		}
 	}
 	private keyup(e: KeyboardEvent)
 	{
 		if (this.active && this.level != null)
 		{
-			switch (e.code)
+			this.chrControllers.forEach(ctrl =>
 			{
-				case "ArrowRight":
-					this.level.mainCharacter.endMoving("right");
-					break;
-
-				case "ArrowLeft":
-					this.level.mainCharacter.endMoving("left");
-					break;
-
-				default:
-					break;
-			}
+				ctrl.keyup(e);
+			});
 		}
 	}
 }
