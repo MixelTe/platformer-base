@@ -1,4 +1,4 @@
-import { Platform } from "./platform.js";
+import { Platform } from "./platform";
 
 export class Platform_Movable extends Platform
 {

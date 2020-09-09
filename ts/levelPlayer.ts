@@ -22,9 +22,12 @@ export class LevelPlayer
 	{
 		if (this.level != null)
 		{
-			this.level.platforms.forEach(pl => pl.preUpdate());
-			this.level.character.update();
-			this.level.platforms.forEach(pl => pl.update());
+			this.level.objects.forEach(obj => obj.preUpdate());
+			this.level.objects.forEach(obj => obj.update());
+			// this.level.platforms.forEach(pl => pl.preUpdate());
+			// this.level.characters.forEach(chr => chr.preUpdate());
+			// this.level.characters.forEach(chr => chr.update());
+			// this.level.platforms.forEach(pl => pl.update());
 		}
 	}
 	public redraw(ctx: CanvasRenderingContext2D)
@@ -38,11 +41,11 @@ export class LevelPlayer
 			ctx.fillStyle = this.level.backgroundColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-			this.camera.translate(ctx, this.level.character);
+			this.camera.translate(ctx, this.level.mainCharacter);
 
-			this.level.platforms.forEach(pl => pl.draw(ctx));
-
-			this.level.character.draw(ctx);
+			this.level.objects.forEach(obj => obj.draw(ctx));
+			// this.level.platforms.forEach(pl => pl.draw(ctx));
+			// this.level.characters.forEach(chr => chr.draw(ctx));
 		}
 		ctx.restore();
 	}
@@ -54,15 +57,15 @@ export class LevelPlayer
 			switch (e.code)
 			{
 				case "ArrowUp":
-					this.level.character.jump();
+					this.level.mainCharacter.jump();
 					break;
 
 				case "ArrowRight":
-					this.level.character.startMoving("right");
+					this.level.mainCharacter.startMoving("right");
 					break;
 
 				case "ArrowLeft":
-					this.level.character.startMoving("left");
+					this.level.mainCharacter.startMoving("left");
 					break;
 
 				default:
@@ -77,11 +80,11 @@ export class LevelPlayer
 			switch (e.code)
 			{
 				case "ArrowRight":
-					this.level.character.endMoving("right");
+					this.level.mainCharacter.endMoving("right");
 					break;
 
 				case "ArrowLeft":
-					this.level.character.endMoving("left");
+					this.level.mainCharacter.endMoving("left");
 					break;
 
 				default:

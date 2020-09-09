@@ -20,6 +20,11 @@ export class Level1 extends Level
 	constructor()
 	{
 		super();
-		this.character.setCoords(200, 120);
+		this.mainCharacter.setCoords(200, 120);
+
+		const chr1 = this.addCharacter();
+		chr1.setCoords(400, 120);
+
+		this.assign();
 	}
 }

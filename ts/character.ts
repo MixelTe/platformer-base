@@ -1,16 +1,12 @@
 import { MinMax, Rect } from "./functions.js";
 import { intersection } from "./littleLib.js";
 import { Level } from "./level.js";
-import { Platform } from "./platforms/platform.js";
+import { WorldObject, WorldObject_Movable } from "./worldObject.js";
 
-export class Character
+export class Character extends WorldObject_Movable
 {
 	private level: Level;
-	private x = 0;
-	private y = 0;
-	private width = 30;
-	private height = 30;
-	private color = "blue";
+	protected color = "blue";
 	private speedMax = 10;
 	private acc = 1;
 	private jumpForce = 9;
@@ -20,7 +16,7 @@ export class Character
 	private direction: IDirection = "right";
 	private needMovingNow = false;
 	private canJump = false;
-	private platformBelow: null | Platform = null;
+	private platformBelow: null | WorldObject = null;
 	private platformBelowX: null | number = null;
 	private platformBelowPastX: null | number = null;
 	private speedCurX = 0;
@@ -29,10 +25,11 @@ export class Character
 
 	constructor(level: Level)
 	{
+		super(0, 0, 30, 30)
 		this.level = level;
 	}
 
-	public update()
+	public preUpdate()
 	{
 		this.move();
 	}
@@ -80,7 +77,7 @@ export class Character
 		else this.platformBelowPastX = null;
 		return nextX;
 	}
-	private intersectionY(nextY: number, rect: Rect, el: Platform)
+	private intersectionY(nextY: number, rect: Rect, el: WorldObject)
 	{
 		let intersected = false;
 		if (intersection.rects(rect, el))
@@ -91,7 +88,7 @@ export class Character
 		}
 		return { nextY, intersected };
 	}
-	private intersectionX(nextX: number, rect: Rect, el: Platform)
+	private intersectionX(nextX: number, rect: Rect, el: WorldObject)
 	{
 		let intersected = false;
 		if (intersection.rects(rect, el))
@@ -120,9 +117,10 @@ export class Character
 		this.platformBelowX = null;
 		let platformBelowXSet: null | boolean = null;
 		this.canJump = false;
-		let platformBelow: Platform | null | false = null;
-		for (const el of this.level.platforms)
+		let platformBelow: WorldObject | null | false = null;
+		for (const el of this.level.objects)
 		{
+			if (el == this) continue;
 			let _nextY = { nextY, intersected: false };
 			let _nextX = { nextX, intersected: false };
 
@@ -132,7 +130,7 @@ export class Character
 			rect2.y = _nextY.nextY + 1;
 			_nextX = this.intersectionX(nextX, rect2, el);
 
-			if (el.nextPos != null)
+			if (el instanceof WorldObject_Movable && el.nextPos != null)
 			{
 				const rect = this.getRect();
 				rect.x = _nextX.nextX + 1;
@@ -176,9 +174,9 @@ export class Character
 			nextX = _nextX.nextX;
 		};
 
-		if (platformBelow instanceof Platform)
+		if (platformBelow instanceof WorldObject)
 		{
-			if (platformBelow.nextPos != null) nextY = platformBelow.nextPos.y + platformBelow.height;
+			if (platformBelow instanceof WorldObject_Movable && platformBelow.nextPos != null) nextY = platformBelow.nextPos.y + platformBelow.height;
 
 			if (platformBelowXSet)
 			{
@@ -196,14 +194,12 @@ export class Character
 			}
 		}
 
-		this.y = nextY;
-		this.x = nextX;
+		this.nextPos = this.getRect();
+		this.nextPos.y = nextY;
+		this.nextPos.x = nextX;
 		// this.y = Math.max(this.y, 0);
 	}
-	public getRect()
-	{
-		return new Rect(this.x, this.y, this.width, this.height);
-	}
+
 	public jump()
 	{
 		if (this.canJump)
@@ -220,16 +216,6 @@ export class Character
 	{
 		if (direction == this.direction) this.needMovingNow = false;
 	}
-
-
-	public draw(ctx: CanvasRenderingContext2D)
-	{
-		ctx.save();
-		ctx.fillStyle = this.color;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.restore();
-	}
-
 
 	public setCoords(x: number, y: number)
 	{
