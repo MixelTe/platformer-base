@@ -34,10 +34,6 @@ export class LevelPlayer
 		{
 			this.level.objects.forEach(obj => obj.preUpdate());
 			this.level.objects.forEach(obj => obj.update());
-			// this.level.platforms.forEach(pl => pl.preUpdate());
-			// this.level.characters.forEach(chr => chr.preUpdate());
-			// this.level.characters.forEach(chr => chr.update());
-			// this.level.platforms.forEach(pl => pl.update());
 		}
 	}
 	public redraw(ctx: CanvasRenderingContext2D)
@@ -54,8 +50,6 @@ export class LevelPlayer
 			this.camera.translate(ctx, this.level.mainCharacter);
 
 			this.level.objects.forEach(obj => obj.draw(ctx));
-			// this.level.platforms.forEach(pl => pl.draw(ctx));
-			// this.level.characters.forEach(chr => chr.draw(ctx));
 		}
 		ctx.restore();
 	}

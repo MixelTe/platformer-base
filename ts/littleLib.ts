@@ -322,7 +322,7 @@ export class MoveAnimator
 }
 
 
-export interface Rect {
+interface Rect {
 	x: number,
 	y: number,
 	width: number,
