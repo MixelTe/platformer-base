@@ -168,6 +168,13 @@ export class Character extends WorldObject_Movable
 					if (platformBelowXSet == null) platformBelowXSet = true;
 					else platformBelowXSet = false;
 				}
+				else
+				{
+					if (el instanceof Character)
+					{
+						el.jump(0.7);
+					}
+				}
 			}
 
 			nextY = _nextY.nextY;
@@ -200,11 +207,12 @@ export class Character extends WorldObject_Movable
 		// this.y = Math.max(this.y, 0);
 	}
 
-	public jump()
+	public jump(powerMult: number = 1)
 	{
 		if (this.canJump)
 		{
 			this.speedCurY = this.jumpForce + Math.abs(this.speedCurX) * this.jumpForce_SpeedMul;
+			this.speedCurY *= powerMult;
 		}
 	}
 	public startMoving(direction: IDirection)
