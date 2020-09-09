@@ -20,6 +20,7 @@ export class Character extends WorldObject_Movable
 	private platformBelowX: null | number = null;
 	private platformBelowPastX: null | number = null;
 	private speedCurX = 0;
+	private speedAddX = 0;
 	private speedCurY = 0;
 	private accCur = 0;
 
@@ -42,7 +43,8 @@ export class Character extends WorldObject_Movable
 	{
 		if (this.needMovingNow)
 		{
-			switch (this.direction) {
+			switch (this.direction)
+			{
 				case "left":
 					this.accCur = -this.acc;
 					break;
@@ -64,17 +66,26 @@ export class Character extends WorldObject_Movable
 		this.speedCurX += this.accCur;
 		this.speedCurX = MinMax(this.speedCurX, -this.speedMax, this.speedMax);
 
-		let nextX = this.x + this.speedCurX;
+		let nextX = this.x + this.speedCurX + this.speedAddX;
 
-		if (this.platformBelowX != null)
+		if (this.platformBelow instanceof Character)
 		{
-			if (this.platformBelowPastX != null)
-			{
-				nextX += this.platformBelowX - this.platformBelowPastX;
-			}
-			this.platformBelowPastX = this.platformBelowX;
+			this.speedAddX = this.platformBelow.speedCurX;
 		}
-		else this.platformBelowPastX = null;
+		else
+		{
+			this.speedAddX = 0;
+
+			if (this.platformBelowX != null)
+			{
+				if (this.platformBelowPastX != null)
+				{
+					nextX += this.platformBelowX - this.platformBelowPastX;
+				}
+				this.platformBelowPastX = this.platformBelowX;
+			}
+			else this.platformBelowPastX = null;
+		}
 		return nextX;
 	}
 	private intersectionY(nextY: number, rect: Rect, el: WorldObject)
