@@ -153,20 +153,6 @@ abstract class Camera_splited extends Camera
 	{
 		super(translateMode, bounds);
 	}
-
-	protected drawSection(ctx: CanvasRenderingContext2D, level: Level)
-	{
-		const canvas = ctx.canvas;
-		ctx.save();
-		ctx.beginPath();
-		ctx.rect(-this.dX, -this.dY, canvas.width / 2, canvas.height);
-		ctx.clip();
-		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
-		ctx.restore();
-	}
-}
-class Camera_splited_inCenter extends Camera_splited
-{
 	public draw(ctx: CanvasRenderingContext2D, level: Level, character: Character)
 	{
 		const canvas = ctx.canvas;
@@ -175,12 +161,12 @@ class Camera_splited_inCenter extends Camera_splited
 		else character2 = level.mainCharacter;
 
 		ctx.save();
-		this.translate(ctx, character, new Rect(0, 0, canvas.width / 2, canvas.height));
+		this.translate(ctx, character, new Rect(0, 0, canvas.width / 2, canvas.height), true);
 		this.drawSection(ctx, level);
 		ctx.restore();
 
 		ctx.save();
-		this.translate(ctx, character2, new Rect(canvas.width / 2, 0, canvas.width / 2, canvas.height));
+		this.translate(ctx, character2, new Rect(canvas.width / 2, 0, canvas.width / 2, canvas.height), false);
 		this.drawSection(ctx, level);
 		ctx.restore();
 
@@ -195,7 +181,20 @@ class Camera_splited_inCenter extends Camera_splited
 
 		// level.draw(ctx);
 	};
-
+	protected abstract translate(ctx: CanvasRenderingContext2D, character: Character, drawZone: Rect, first: boolean): void
+	protected drawSection(ctx: CanvasRenderingContext2D, level: Level)
+	{
+		const canvas = ctx.canvas;
+		ctx.save();
+		ctx.beginPath();
+		ctx.rect(-this.dX, -this.dY, canvas.width / 2, canvas.height);
+		ctx.clip();
+		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
+		ctx.restore();
+	}
+}
+class Camera_splited_inCenter extends Camera_splited
+{
 	public translate(ctx: CanvasRenderingContext2D, character: Character, drawZone: Rect)
 	{
 		const canvas = ctx.canvas;
