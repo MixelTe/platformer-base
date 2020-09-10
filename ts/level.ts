@@ -3,6 +3,7 @@ import { Platform } from "./platforms/platform.js";
 import { WorldObject } from "./worldObject.js";
 import { Rect } from "./functions.js";
 import { intersection } from "./littleLib.js";
+import { MovableObj } from "./platforms/movable.js";
 
 export abstract class Level
 {
@@ -11,7 +12,8 @@ export abstract class Level
 	public objects: WorldObject[] = [];
 
 	protected abstract platforms: Platform[];
-	public characters: Character[] = [];
+	protected movableObjs: MovableObj[] = [];
+	private characters: Character[] = [];
 	public mainCharacter: Character;
 	public secondCharacter: Character;
 
@@ -30,7 +32,7 @@ export abstract class Level
 	}
 	protected assign()
 	{
-		this.objects = this.objects.concat(this.platforms, this.characters);
+		this.objects = this.objects.concat(this.platforms, this.movableObjs, this.characters);
 	}
 
 	public update()

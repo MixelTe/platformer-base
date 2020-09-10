@@ -61,3 +61,7 @@ export class WorldObject_Moving extends WorldObject
 		}
 	}
 }
+export class WorldObject_Movable extends WorldObject_Moving
+{
+
+}

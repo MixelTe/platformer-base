@@ -26,7 +26,7 @@ export class LevelPlayer
 		this.level = new Level1();
 		this.chrControllers = [];
 		this.chrControllers[0] = new CharacterController(this.level.mainCharacter);
-		if (this.level.characters[1]) this.chrControllers[1] = new CharacterController(this.level.characters[1], "wsad");
+		if (this.level.secondCharacter) this.chrControllers[1] = new CharacterController(this.level.secondCharacter, "wsad");
 	}
 
 
