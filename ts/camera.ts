@@ -73,6 +73,21 @@ export abstract class Camera
 		const dy = centerY - characterRect.y - characterRect.height / 2;
 		return { dx, dy };
 	}
+	protected getTranslate_inZone(character: Character, zone: Rect, dx: number, dy: number)
+	{
+		const characterRect = character.getRect();
+		const _zone = zone.copy();
+		_zone.x -= dx;
+		_zone.y -= dy;
+
+		if (characterRect.x < _zone.x) dx += _zone.x - characterRect.x;
+		if (characterRect.y < _zone.y) dy += _zone.y - characterRect.y;
+
+		if (characterRect.x > _zone.x + _zone.width - characterRect.width) dx += _zone.x + _zone.width - characterRect.width - characterRect.x;
+		if (characterRect.y > _zone.y + _zone.height - characterRect.height) dy += _zone.y + _zone.height - characterRect.height - characterRect.y;
+
+		return { dx, dy };
+	}
 }
 
 class Camera_inCenter extends Camera
@@ -116,19 +131,7 @@ class Camera_inZone extends Camera
 
 	public translate(ctx: CanvasRenderingContext2D, character: Character)
 	{
-		const characterRect = character.getRect();
-		const zone = this.zone.copy();
-		zone.x -= this.dX;
-		zone.y -= this.dY;
-
-		let dx = this.dX;
-		let dy = this.dY;
-
-		if (characterRect.x < zone.x) dx += zone.x - characterRect.x;
-		if (characterRect.y < zone.y) dy += zone.y - characterRect.y;
-
-		if (characterRect.x > zone.x + zone.width - characterRect.width) dx += zone.x + zone.width - characterRect.width - characterRect.x;
-		if (characterRect.y > zone.y + zone.height - characterRect.height) dy += zone.y + zone.height - characterRect.height - characterRect.y;
+		const dxy = this.getTranslate_inZone(character, this.zone, this.dX, this.dY);
 
 		if (!true)
 		{
@@ -139,7 +142,7 @@ class Camera_inZone extends Camera
 			ctx.restore();
 		}
 
-		this.normalizeAndSetCoords(dx, dy, ctx, ctx.canvas.width, ctx.canvas.height);
+		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, ctx.canvas.width, ctx.canvas.height);
 	}
 }
 
