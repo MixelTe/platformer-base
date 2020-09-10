@@ -8,6 +8,9 @@ export abstract class Camera
 	protected translateMode: ITranslateMode;
 	private bounds: Rect | undefined;
 
+	protected dX = 0;
+	protected dY = 0;
+
 	constructor(translateMode: ITranslateMode = "XY", bounds?: Rect)
 	{
 		this.translateMode = translateMode;
@@ -57,7 +60,8 @@ export abstract class Camera
 			case "Y": ctx.translate(0, dy); break;
 			default: ctx.translate(0, 0); break;
 		}
-		return { dx, dy };
+		this.dX = dx;
+		this.dY = dy;
 	}
 	protected getTranslate_inCenter(character: Character, width: number, height: number)
 	{
@@ -75,9 +79,9 @@ class Camera_inCenter extends Camera
 {
 	public draw(ctx: CanvasRenderingContext2D, level: Level, character: Character)
 	{
-		const dxy = this.translate(ctx, character);
+		this.translate(ctx, character);
 		const canvas = ctx.canvas;
-		level.draw(ctx, new Rect(-dxy.dx, -dxy.dy, canvas.width, canvas.height));
+		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
 
 		// level.draw(ctx);
 	};
@@ -93,8 +97,6 @@ class Camera_inCenter extends Camera
 class Camera_inZone extends Camera
 {
 	private zone: Rect;
-	private dX = 0;
-	private dY = 0;
 
 	constructor(zone: Rect, translateMode: ITranslateMode = "XY", bounds?: Rect)
 	{
@@ -137,9 +139,7 @@ class Camera_inZone extends Camera
 			ctx.restore();
 		}
 
-		const normalized = this.normalizeAndSetCoords(dx, dy, ctx, ctx.canvas.width, ctx.canvas.height);
-		this.dX = normalized.dx;
-		this.dY = normalized.dy;
+		this.normalizeAndSetCoords(dx, dy, ctx, ctx.canvas.width, ctx.canvas.height);
 	}
 }
 
@@ -151,14 +151,14 @@ abstract class Camera_splited extends Camera
 		super(translateMode, bounds);
 	}
 
-	protected drawSection(dxy: {dx: number, dy: number}, ctx: CanvasRenderingContext2D, level: Level)
+	protected drawSection(ctx: CanvasRenderingContext2D, level: Level)
 	{
 		const canvas = ctx.canvas;
 		ctx.save();
 		ctx.beginPath();
-		ctx.rect(-dxy.dx, -dxy.dy, canvas.width / 2, canvas.height);
+		ctx.rect(-this.dX, -this.dY, canvas.width / 2, canvas.height);
 		ctx.clip();
-		level.draw(ctx, new Rect(-dxy.dx, -dxy.dy, canvas.width, canvas.height));
+		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
 		ctx.restore();
 	}
 }
@@ -172,13 +172,13 @@ class Camera_splited_inCenter extends Camera_splited
 		else character2 = level.mainCharacter;
 
 		ctx.save();
-		const dxy = this.translate(ctx, character, new Rect(0, 0, canvas.width / 2, canvas.height));
-		this.drawSection(dxy, ctx, level);
+		this.translate(ctx, character, new Rect(0, 0, canvas.width / 2, canvas.height));
+		this.drawSection(ctx, level);
 		ctx.restore();
 
 		ctx.save();
-		const dxy2 = this.translate(ctx, character2, new Rect(canvas.width / 2, 0, canvas.width / 2, canvas.height));
-		this.drawSection(dxy2, ctx, level);
+		this.translate(ctx, character2, new Rect(canvas.width / 2, 0, canvas.width / 2, canvas.height));
+		this.drawSection(ctx, level);
 		ctx.restore();
 
 		ctx.save();
@@ -197,8 +197,8 @@ class Camera_splited_inCenter extends Camera_splited
 	{
 		const canvas = ctx.canvas;
 		const dxy = this.getTranslate_inCenter(character, drawZone.width, drawZone.height);
-		
+
 		ctx.translate(drawZone.x, drawZone.y);
-		return this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, canvas.width, canvas.height);
+		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, canvas.width, canvas.height);
 	}
 }
