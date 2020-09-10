@@ -1,6 +1,6 @@
 import { Level } from "../level.js";
 import { Platform } from "../platforms/platform.js";
-import { Platform_Movable } from "../platforms/movable.js";
+import { Platform_Moving } from "../platforms/moving.js";
 
 export class Level1 extends Level
 {

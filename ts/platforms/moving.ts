@@ -1,6 +1,6 @@
 import { Platform } from "./platform";
 
-export class Platform_Movable extends Platform
+export class Platform_Moving extends Platform
 {
 	protected color = "darkgreen";
 

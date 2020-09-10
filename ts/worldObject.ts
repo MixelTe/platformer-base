@@ -47,7 +47,7 @@ export class WorldObject
 		ctx.restore();
 	}
 }
-export class WorldObject_Movable extends WorldObject
+export class WorldObject_Moving extends WorldObject
 {
 	public nextPos: Rect | null = null;
 	public update()

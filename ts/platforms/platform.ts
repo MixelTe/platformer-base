@@ -1,6 +1,6 @@
-import { WorldObject_Movable } from "../worldObject.js";
+import { WorldObject_Moving } from "../worldObject.js";
 
-export class Platform extends WorldObject_Movable
+export class Platform extends WorldObject_Moving
 {
 	protected color = "green";
 

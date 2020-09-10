@@ -1,9 +1,9 @@
 import { MinMax, Rect } from "./functions.js";
 import { intersection } from "./littleLib.js";
 import { Level } from "./level.js";
-import { WorldObject, WorldObject_Movable } from "./worldObject.js";
+import { WorldObject, WorldObject_Moving } from "./worldObject.js";
 
-export class Character extends WorldObject_Movable
+export class Character extends WorldObject_Moving
 {
 	private level: Level;
 	protected color = "blue";
@@ -142,7 +142,7 @@ export class Character extends WorldObject_Movable
 			rect2.y = _nextY.nextY + 1;
 			_nextX = this.intersectionX(nextX, rect2, el);
 
-			if (el instanceof WorldObject_Movable && el.nextPos != null)
+			if (el instanceof WorldObject_Moving && el.nextPos != null)
 			{
 				const rect = this.getRect();
 				rect.x = _nextX.nextX + 1;
@@ -195,7 +195,7 @@ export class Character extends WorldObject_Movable
 
 		if (platformBelow instanceof WorldObject)
 		{
-			if (platformBelow instanceof WorldObject_Movable && platformBelow.nextPos != null) nextY = platformBelow.nextPos.y + platformBelow.height;
+			if (platformBelow instanceof WorldObject_Moving && platformBelow.nextPos != null) nextY = platformBelow.nextPos.y + platformBelow.height;
 
 			if (platformBelowXSet)
 			{
