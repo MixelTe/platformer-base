@@ -2,6 +2,7 @@ import { Character } from "./character.js";
 import { Rect } from "./functions.js";
 import { Level } from "./level.js";
 
+type ITranslateMode = "X" | "Y" | "XY";
 export abstract class Camera
 {
 	protected translateMode: ITranslateMode;
@@ -99,7 +100,7 @@ class Camera_inZone extends Camera
 		this.translate(ctx, level.mainCharacter);
 		const canvas = ctx.canvas;
 		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
-		
+
 		// level.draw(ctx);
 	};
 
@@ -133,5 +134,3 @@ class Camera_inZone extends Camera
 		this.dY = normalized.dy;
 	}
 }
-
-type ITranslateMode = "X" | "Y" | "XY";
