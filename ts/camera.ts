@@ -88,6 +88,14 @@ export abstract class Camera
 
 		return { dx, dy };
 	}
+	protected drawZone(ctx: CanvasRenderingContext2D, zone: Rect)
+	{
+		ctx.save();
+		ctx.strokeStyle = "red";
+		ctx.lineWidth = 5;
+		ctx.strokeRect(zone.x, zone.y, zone.width, zone.height);
+		ctx.restore();
+	}
 }
 
 class Camera_inCenter extends Camera
@@ -132,17 +140,9 @@ class Camera_inZone extends Camera
 	public translate(ctx: CanvasRenderingContext2D, character: Character)
 	{
 		const dxy = this.getTranslate_inZone(character, this.zone, this.dX, this.dY);
-
-		if (!true)
-		{
-			ctx.save();
-			ctx.strokeStyle = "red";
-			ctx.lineWidth = 5;
-			ctx.strokeRect(this.zone.x, this.zone.y, this.zone.width, this.zone.height);
-			ctx.restore();
-		}
-
 		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, ctx.canvas.width, ctx.canvas.height);
+
+		if (!true) this.drawZone(ctx, this.zone);
 	}
 }
 
