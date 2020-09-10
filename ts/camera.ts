@@ -189,7 +189,7 @@ abstract class Camera_splited extends Camera
 		ctx.beginPath();
 		ctx.rect(-this.dX, -this.dY, canvas.width / 2, canvas.height);
 		ctx.clip();
-		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
+		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width / 2, canvas.height));
 		ctx.restore();
 	}
 }
@@ -202,7 +202,7 @@ class Camera_splited_inCenter extends Camera_splited
 		const dxy = this.getTranslate_inCenter(character, drawZone.width, drawZone.height);
 
 		ctx.translate(drawZone.x, drawZone.y);
-		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, canvas.width, canvas.height);
+		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, drawZone.width, drawZone.height);
 	}
 }
 class Camera_splited_inZone extends Camera_splited
@@ -229,7 +229,7 @@ class Camera_splited_inZone extends Camera_splited
 		else dxy = this.getTranslate_inZone(character, this.zone2, this.dX2, this.dY2);
 
 		ctx.translate(drawZone.x, drawZone.y);
-		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, ctx.canvas.width, ctx.canvas.height);
+		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, drawZone.width, drawZone.height);
 
 		if (first)
 		{
