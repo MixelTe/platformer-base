@@ -3,7 +3,7 @@ import { Platform } from "./platforms/platform.js";
 import { WorldObject } from "./worldObject.js";
 import { Rect } from "./functions.js";
 import { intersection } from "./littleLib.js";
-import { MovableObj } from "./platforms/movable.js";
+// import { MovableObj } from "./platforms/movable.js";
 
 export abstract class Level
 {
@@ -12,7 +12,7 @@ export abstract class Level
 	public objects: WorldObject[] = [];
 
 	protected abstract platforms: Platform[];
-	protected movableObjs: MovableObj[] = [];
+	// private movableObjs: MovableObj[] = [];
 	private characters: Character[] = [];
 	public mainCharacter: Character;
 	public secondCharacter: Character;
@@ -26,13 +26,20 @@ export abstract class Level
 		this.characters[1] = this.secondCharacter;
 	}
 
+	protected addMovableObj(x: number, y: number, width: number, height: number)
+	{
+		// const obj = new MovableObj(x, y, width, height, this);
+		// this.movableObjs.push(obj);
+		// return obj;
+	}
 	protected addSecondCharacter()
 	{
 		this.secondCharacter.ActiveFull = true;
 	}
 	protected assign()
 	{
-		this.objects = this.objects.concat(this.platforms, this.movableObjs, this.characters);
+		// this.objects = this.objects.concat(this.platforms, this.movableObjs, this.characters);
+		this.objects = this.objects.concat(this.platforms, this.characters);
 	}
 
 	public update()

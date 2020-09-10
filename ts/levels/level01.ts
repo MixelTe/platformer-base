@@ -1,7 +1,6 @@
 import { Level } from "../level.js";
 import { Platform } from "../platforms/platform.js";
 import { Platform_Moving } from "../platforms/moving.js";
-import { MovableObj } from "../platforms/movable.js";
 
 export class Level1 extends Level
 {
@@ -19,9 +18,6 @@ export class Level1 extends Level
 		new Platform(790, 0, 10, 600),
 		new Platform(0, 590, 800, 10),
 	];
-	protected movableObjs = [
-		new MovableObj(300, 20, 40, 40),
-	];
 
 	constructor()
 	{
@@ -30,6 +26,8 @@ export class Level1 extends Level
 
 		this.addSecondCharacter();
 		this.secondCharacter.setCoords(400, 120);
+
+		const mvObj = this.addMovableObj(300, 20, 40, 40);
 
 		this.assign();
 	}

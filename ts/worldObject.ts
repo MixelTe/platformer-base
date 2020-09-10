@@ -1,4 +1,5 @@
 import { Rect } from "./functions.js";
+import { Level } from "./level.js";
 
 export class WorldObject
 {
@@ -60,8 +61,4 @@ export class WorldObject_Moving extends WorldObject
 			this.height = this.nextPos.height;
 		}
 	}
-}
-export class WorldObject_Movable extends WorldObject_Moving
-{
-
 }
