@@ -8,7 +8,8 @@ export class LevelPlayer
 {
 	private level: Level | null = null;
 	// private camera: Camera = Camera.create.inCenter("XY", new Rect(-100, -100, 1000, 800));
-	private camera: Camera = Camera.create.inZone(new Rect(200, 100, 300, 200), "XY", new Rect(-100, 0, 1000, 800));
+	// private camera: Camera = Camera.create.inZone(new Rect(200, 100, 300, 200), "XY", new Rect(-100, 0, 1000, 800));
+	private camera: Camera = Camera.create.splited.inCenter("XY", new Rect(-100, -100, 1000, 800));
 	private chrControllers: CharacterController[] = [];
 	private active = true;
 
@@ -43,7 +44,7 @@ export class LevelPlayer
 			ctx.fillStyle = this.level.backgroundColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-			this.camera.draw(ctx, this.level);
+			this.camera.draw(ctx, this.level, this.level.mainCharacter);
 		}
 		ctx.restore();
 	}
