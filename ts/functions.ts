@@ -21,4 +21,30 @@ export class Rect
 	{
 		return new Rect(this.x, this.y, this.width, this.height);
 	}
+
+	public intersect(rect: Rect)
+	{
+		const rect1 = this.copy();
+		this.normalizeRect(rect1);
+		this.normalizeRect(rect);
+		return (
+			rect1.x + rect1.width >= rect.x &&
+			rect.x + rect.width >= rect1.x &&
+			rect1.y + rect1.height >= rect.y &&
+			rect.y + rect.height >= rect1.y
+		);
+	}
+	private normalizeRect(rect: Rect)
+	{
+		if (rect.width < 0)
+		{
+			rect.x += rect.width;
+			rect.width = Math.abs(rect.width);
+		}
+		if (rect.height < 0)
+		{
+			rect.y += rect.height;
+			rect.height = Math.abs(rect.height);
+		}
+	}
 }
