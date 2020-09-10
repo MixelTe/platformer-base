@@ -1,5 +1,6 @@
 import { Character } from "./character.js";
 import { Rect } from "./functions.js";
+import { Level } from "./level.js";
 
 export abstract class Camera
 {
@@ -22,7 +23,7 @@ export abstract class Camera
 	{
 		return new Camera_inZone(zone, translateMode, bounds);
 	}
-	public abstract translate(ctx: CanvasRenderingContext2D, character: Character): void;
+	public abstract draw(ctx: CanvasRenderingContext2D, level: Level): void;
 
 	protected normalizeAndSetCoords(dx: number, dy: number, ctx: CanvasRenderingContext2D, bounds?: Rect)
 	{
@@ -55,6 +56,14 @@ class Camera_inCenter extends Camera
 		super(translateMode);
 		this.bounds = bounds;
 	}
+	public draw(ctx: CanvasRenderingContext2D, level: Level)
+	{
+		const dxy = this.translate(ctx, level.mainCharacter);
+		const canvas = ctx.canvas;
+		level.draw(ctx, new Rect(-dxy.dx, -dxy.dy, canvas.width, canvas.height));
+
+		// level.draw(ctx);
+	};
 
 	public translate(ctx: CanvasRenderingContext2D, character: Character)
 	{
@@ -66,7 +75,7 @@ class Camera_inCenter extends Camera
 		const dx = centerX - characterRect.x - characterRect.width / 2;
 		const dy = centerY - characterRect.y - characterRect.height / 2;
 
-		this.normalizeAndSetCoords(dx, dy, ctx, this.bounds);
+		return this.normalizeAndSetCoords(dx, dy, ctx, this.bounds);
 	}
 }
 
@@ -84,6 +93,15 @@ class Camera_inZone extends Camera
 		this.bounds = bounds;
 		this.zone = zone;
 	}
+
+	public draw(ctx: CanvasRenderingContext2D, level: Level)
+	{
+		this.translate(ctx, level.mainCharacter);
+		const canvas = ctx.canvas;
+		level.draw(ctx, new Rect(-this.dX, -this.dY, canvas.width, canvas.height));
+		
+		// level.draw(ctx);
+	};
 
 	public translate(ctx: CanvasRenderingContext2D, character: Character)
 	{

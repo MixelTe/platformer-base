@@ -1,6 +1,8 @@
 import { Character } from "./character.js";
 import { Platform } from "./platforms/platform.js";
 import { WorldObject } from "./worldObject.js";
+import { Rect } from "./functions.js";
+import { intersection } from "./littleLib.js";
 
 export abstract class Level
 {
@@ -43,11 +45,17 @@ export abstract class Level
 		});
 	}
 
-	public draw(ctx: CanvasRenderingContext2D)
+	public draw(ctx: CanvasRenderingContext2D, bounds?: Rect)
 	{
 		this.objects.forEach(obj =>
 		{
-			if (obj.Active_draw) obj.draw(ctx)
+			if (obj.Active_draw)
+			{
+				if (bounds == undefined || intersection.rects(bounds, obj.getRect()))
+				{
+					obj.draw(ctx);
+				}
+			}
 		});
 	}
 }

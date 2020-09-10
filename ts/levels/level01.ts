@@ -10,6 +10,8 @@ export class Level1 extends Level
 		new Platform(200, 270, 150, 10),
 		new Platform(500, 360, 180, 10),
 
+		new Platform(-200, 380, 180, 10),
+		new Platform(850, 340, 180, 10),
 
 		new Platform(0, 0, 800, 10),
 		new Platform(0, 0, 10, 600),

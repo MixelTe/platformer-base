@@ -43,8 +43,7 @@ export class LevelPlayer
 			ctx.fillStyle = this.level.backgroundColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-			this.camera.translate(ctx, this.level.mainCharacter);
-			this.level.draw(ctx);
+			this.camera.draw(ctx, this.level);
 		}
 		ctx.restore();
 	}
