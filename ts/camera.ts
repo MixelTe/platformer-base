@@ -39,7 +39,7 @@ export abstract class Camera
 	}
 	private static CreateCamera_splited_inZone(zone: Rect, translateMode: ITranslateMode = "XY", bounds?: Rect)
 	{
-		return new Camera_inZone(zone, translateMode, bounds);
+		return new Camera_splited_inZone(zone, translateMode, bounds);
 	}
 	public abstract draw(ctx: CanvasRenderingContext2D, level: Level, character: Character): void;
 
@@ -193,6 +193,7 @@ abstract class Camera_splited extends Camera
 		ctx.restore();
 	}
 }
+
 class Camera_splited_inCenter extends Camera_splited
 {
 	public translate(ctx: CanvasRenderingContext2D, character: Character, drawZone: Rect)
@@ -202,5 +203,45 @@ class Camera_splited_inCenter extends Camera_splited
 
 		ctx.translate(drawZone.x, drawZone.y);
 		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, canvas.width, canvas.height);
+	}
+}
+class Camera_splited_inZone extends Camera_splited
+{
+	private dX1 = this.dX;
+	private dY1 = this.dY;
+	private dX2 = this.dX;
+	private dY2 = this.dY;
+	private zone1: Rect;
+	private zone2: Rect;
+
+	constructor(zone: Rect, translateMode: ITranslateMode = "XY", bounds?: Rect)
+	{
+		super(translateMode, bounds);
+		this.translateMode = translateMode;
+		this.zone1 = zone;
+		this.zone2 = zone;
+	}
+
+	public translate(ctx: CanvasRenderingContext2D, character: Character, drawZone: Rect, first: boolean)
+	{
+		let dxy;
+		if (first) dxy = this.getTranslate_inZone(character, this.zone1, this.dX1, this.dY1);
+		else dxy = this.getTranslate_inZone(character, this.zone2, this.dX2, this.dY2);
+
+		ctx.translate(drawZone.x, drawZone.y);
+		this.normalizeAndSetCoords(dxy.dx, dxy.dy, ctx, ctx.canvas.width, ctx.canvas.height);
+
+		if (first)
+		{
+			this.dX1 = this.dX;
+			this.dY1 = this.dY;
+		}
+		else
+		{
+			this.dX2 = this.dX;
+			this.dY2 = this.dY;
+		}
+
+		if (!true) this.drawZone(ctx, this.zone1);
 	}
 }

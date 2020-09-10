@@ -10,6 +10,7 @@ export class LevelPlayer
 	// private camera: Camera = Camera.create.inCenter("XY", new Rect(-100, -100, 1000, 800));
 	// private camera: Camera = Camera.create.inZone(new Rect(200, 100, 300, 200), "XY", new Rect(-100, 0, 1000, 800));
 	private camera: Camera = Camera.create.splited.inCenter("XY", new Rect(-100, -100, 1000, 800));
+	// private camera: Camera = Camera.create.splited.inZone(new Rect(100, 100, 80, 200), "XY", new Rect(-100, 0, 1000, 800));
 	private chrControllers: CharacterController[] = [];
 	private active = true;
 
