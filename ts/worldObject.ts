@@ -2,6 +2,21 @@ import { Rect } from "./functions.js";
 
 export class WorldObject
 {
+	public Active_physics = true;
+	public Active_interaction = true;
+	public Active_draw = true;
+	public get ActiveFull(): boolean
+	{
+		return this.Active_draw && this.Active_physics && this.Active_interaction;
+	}
+	public set ActiveFull(v: boolean) {
+		this.Active_physics = v;
+		this.Active_interaction = v;
+		this.Active_draw = v;
+	}
+
+
+
 	public x: number;
 	public y: number;
 	public width: number;

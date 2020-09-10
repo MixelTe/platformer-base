@@ -30,11 +30,7 @@ export class LevelPlayer
 
 	public update()
 	{
-		if (this.level != null)
-		{
-			this.level.objects.forEach(obj => obj.preUpdate());
-			this.level.objects.forEach(obj => obj.update());
-		}
+		if (this.level != null) this.level.update();
 	}
 	public redraw(ctx: CanvasRenderingContext2D)
 	{
@@ -48,8 +44,7 @@ export class LevelPlayer
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 			this.camera.translate(ctx, this.level.mainCharacter);
-
-			this.level.objects.forEach(obj => obj.draw(ctx));
+			this.level.draw(ctx);
 		}
 		ctx.restore();
 	}

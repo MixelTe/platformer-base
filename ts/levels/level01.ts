@@ -22,8 +22,8 @@ export class Level1 extends Level
 		super();
 		this.mainCharacter.setCoords(200, 120);
 
-		const chr1 = this.addCharacter();
-		chr1.setCoords(400, 120);
+		this.addSecondCharacter();
+		this.secondCharacter.setCoords(400, 120);
 
 		this.assign();
 	}

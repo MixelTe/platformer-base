@@ -132,6 +132,7 @@ export class Character extends WorldObject_Movable
 		for (const el of this.level.objects)
 		{
 			if (el == this) continue;
+			if (!el.Active_interaction) continue;
 			let _nextY = { nextY, intersected: false };
 			let _nextX = { nextX, intersected: false };
 
