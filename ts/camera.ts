@@ -157,7 +157,7 @@ abstract class Camera_splited extends Camera
 	{
 		const canvas = ctx.canvas;
 		let character2;
-		if (character = level.mainCharacter) character2 = level.secondCharacter;
+		if (character == level.mainCharacter) character2 = level.secondCharacter;
 		else character2 = level.mainCharacter;
 
 		ctx.save();
