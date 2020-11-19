@@ -6,9 +6,9 @@ export class Character extends PhysicsObject
 	protected color = "blue";
 	protected speedMax = 10;
 	protected acc = 1;
-	protected jumpForce = 9;
-	protected jumpForce_SpeedMul = 0.2;
 	protected mass = 5;
+	private jumpForce = 9;
+	private jumpForce_SpeedMul = 0.2;
 
 	private direction: IDirection = "right";
 	private needMovingNow = false;

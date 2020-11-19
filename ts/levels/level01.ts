@@ -24,8 +24,8 @@ export class Level1 extends Level
 		super();
 		this.mainCharacter.setCoords(200, 120);
 
-		this.addSecondCharacter();
-		this.secondCharacter.setCoords(400, 120);
+		// this.addSecondCharacter();
+		// this.secondCharacter.setCoords(400, 120);
 
 		const mvObj = this.addMovableObj(300, 20, 40, 40);
 

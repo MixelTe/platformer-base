@@ -9,8 +9,6 @@ export class PhysicsObject extends WorldObject_Moving
 	private level: Level;
 	protected speedMax = 10;
 	protected acc = 1;
-	protected jumpForce = 9;
-	protected jumpForce_SpeedMul = 0.2;
 	protected mass = 5;
 
 	private platformBelow: null | WorldObject = null;
